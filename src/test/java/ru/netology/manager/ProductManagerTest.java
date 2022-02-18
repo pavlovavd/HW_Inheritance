@@ -12,8 +12,8 @@ class ProductManagerTest {
     private ProductRepository repo = new ProductRepository();
     ProductManager manager = new ProductManager(repo);
     private Product first = new Product(1, "first", 100);
-    private Book Inspector = new Book(2, "Ревизор", 200, "М.Горький");
-    private Smartphone IPhone = new Smartphone(3, "IPhone", 500, "Apple");
+    private Book inspector = new Book(2, "Ревизор", 200, "М.Горький");
+    private Smartphone iPhone = new Smartphone(3, "IPhone", 500, "Apple");
 
     @Test
     public void shouldAddOneProduct() {
@@ -27,9 +27,9 @@ class ProductManagerTest {
     @Test
     public void shouldAddTwoProduct() {
         manager.add(first);
-        manager.add(Inspector);
+        manager.add(inspector);
 
-        Product[] expected = new Product[]{first, Inspector};
+        Product[] expected = new Product[]{first, inspector};
         Product[] actual = repo.findAll();
         assertArrayEquals(expected, actual);
     }
@@ -37,10 +37,10 @@ class ProductManagerTest {
     @Test
     public void shouldAddThreeProduct() {
         manager.add(first);
-        manager.add(Inspector);
-        manager.add(IPhone);
+        manager.add(inspector);
+        manager.add(iPhone);
 
-        Product[] expected = new Product[]{first, Inspector, IPhone};
+        Product[] expected = new Product[]{first, inspector, iPhone};
         Product[] actual = repo.findAll();
         assertArrayEquals(expected, actual);
     }
@@ -57,9 +57,9 @@ class ProductManagerTest {
     @Test
     public void shouldSearchByWhenAddTwoProduct() {
         manager.add(first);
-        manager.add(Inspector);
+        manager.add(inspector);
 
-        Product[] expected = new Product[]{Inspector};
+        Product[] expected = new Product[]{inspector};
         Product[] actual = manager.searchBy("Ревизор");
         assertArrayEquals(expected, actual);
     }
@@ -67,11 +67,33 @@ class ProductManagerTest {
     @Test
     public void shouldSearchByWhenAddThreeProduct() {
         manager.add(first);
-        manager.add(Inspector);
-        manager.add(IPhone);
+        manager.add(inspector);
+        manager.add(iPhone);
 
-        Product[] expected = new Product[]{IPhone};
+        Product[] expected = new Product[]{iPhone};
         Product[] actual = manager.searchBy("IPhone");
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSearchByWhenAddTwoProductOneCategory() {
+        Product second = new Product(2, "second", 100);
+        manager.add(first);
+        manager.add(second);
+
+        Product[] expected = new Product[]{second};
+        Product[] actual = manager.searchBy("second");
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSearchByWhenAddTwoProductCategorySmartphone() {
+        Smartphone samsung = new Smartphone(4, "GalaxyS20", 5000, "Samsung");
+        manager.add(first);
+        manager.add(samsung);
+
+        Product[] expected = new Product[]{samsung};
+        Product[] actual = manager.searchBy("GalaxyS20");
         assertArrayEquals(expected, actual);
     }
 }
